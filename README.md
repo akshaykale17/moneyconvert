@@ -1,6 +1,6 @@
 # moneyconvert
 
-A new Flutter application.
+A new Flutter application for currency conversion using Exchange rate api.
 
 ## Getting Started
 

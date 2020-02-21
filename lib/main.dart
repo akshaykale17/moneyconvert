@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
-  home: Home(),
+  home: MyApp(),
   debugShowCheckedModeBanner: false,
 ));
 
-var _currency = ['AED','ARS','AUD','BGN','BRL','BSD','CAD','CHF','CLP','CNY','COP','CZK','DKK','DOP','EGP','EUR','FJD','GBP','GTQ','HKD','HRK','HUF','IDR','ILS','INR','ISK','JPY','KRW','KZT','MXN','MYR','NOK','NZD','PAB','PEN','PHP','PKR','PLN','PYG','RON','RUB','SAR','SEK','SGD','THB','TRY','TWD','UAH','USD','UYU','ZAR'];
-var _inputcurr = '';
-class Home extends StatefulWidget {
+
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+
+
+class _MyAppState extends State<MyApp> {
+  var _currency = ['AED','ARS','AUD','BGN','BRL','BSD','CAD','CHF','CLP','CNY','COP','CZK','DKK','DOP','EGP','EUR','FJD','GBP','GTQ','HKD','HRK','HUF','IDR','ILS','INR','ISK','JPY','KRW','KZT','MXN','MYR','NOK','NZD','PAB','PEN','PHP','PKR','PLN','PYG','RON','RUB','SAR','SEK','SGD','THB','TRY','TWD','UAH','USD','UYU','ZAR'];
+  var _inputcurr = '';
+  var _outcurr = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+//      backgroundColor: Colors.white,
 
       appBar: AppBar(
         title: Text("Currency Converter"),
-        backgroundColor: Colors.black,
+//        backgroundColor: Colors.orange,
         centerTitle: true,
 
       ),
@@ -23,19 +35,42 @@ class Home extends StatefulWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              DropdownButton<String>(
-                items: _currency.map((String dropdownstring){
-                  return DropdownMenuItem<String>(
-                    child: Text(dropdownstring),
-                  );
-                }).toList(),
+              Expanded(
+                child: DropdownButton<String>(
+                  items: _currency.map((String dropdownstring){
+                    return DropdownMenuItem<String>(
+                      child: Text(dropdownstring  ),
+                      value: dropdownstring,
+                    );
+                  }).toList(),
 
-                onChanged: (String newvalue){
-                  setState(){
-                      _inputcurr = newvalue;
-                  }
-                },
+                  onChanged: (String newvalue){
+                    setState(() {
+                      this._inputcurr=newvalue;
+                      debugPrint(_inputcurr);
+                    });
+                  },
+                ),
+              ),
+
+              Expanded(
+                child: DropdownButton<String>(
+                  items: _currency.map((String dropdownstring){
+                    return DropdownMenuItem<String>(
+                      child: Text(dropdownstring),
+                      value: dropdownstring,
+                    );
+                  }).toList(),
+
+                  onChanged: (String newvalue){
+                    setState(() {
+                      this._outcurr=newvalue;
+                      debugPrint(_outcurr);
+                    });
+                  },
+                ),
               )
+
             ],
           ),
           TextField(
@@ -43,7 +78,7 @@ class Home extends StatefulWidget {
 
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              fillColor: Colors.grey,
+              fillColor: Colors.white,
 
               hintText: "Input Amount",
               filled: true,
@@ -54,12 +89,4 @@ class Home extends StatefulWidget {
       ),
     );
   }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return null;
-  }
 }
-
-

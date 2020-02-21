@@ -26,13 +26,23 @@ class _MyAppState extends State<MyApp> {
   var _currency = ['AED','ARS','AUD','BGN','BRL','BSD','CAD','CHF','CLP','CNY','COP','CZK','DKK','DOP','EGP','EUR','FJD','GBP','GTQ','HKD','HRK','HUF','IDR','ILS','INR','ISK','JPY','KRW','KZT','MXN','MYR','NOK','NZD','PAB','PEN','PHP','PKR','PLN','PYG','RON','RUB','SAR','SEK','SGD','THB','TRY','TWD','UAH','USD','UYU','ZAR'];
   var _inputcurr = 'AED';
   var _outcurr = 'AED';
-
+  var last ;
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     myController.dispose();
     super.dispose();
   }
+
+  @override
+  void initState() {
+
+    super.initState();
+//    this.getJSONdata();
+
+  }
+
+
 
 
   @override
@@ -111,9 +121,12 @@ class _MyAppState extends State<MyApp> {
           RaisedButton(
             color: Colors.blue,
             child: Text("Calculate"),
-            onPressed: (){
+            onPressed: _temp  /*(){
+
+
               setState(() async {
                 // Setting URL
+
                 String url_str = "https://api.exchangerate-api.com/v4/latest/"+_inputcurr;
 
                 var response = await http.get(
@@ -133,11 +146,17 @@ class _MyAppState extends State<MyApp> {
               int b = int.parse(myController.text);
               
               print(fin[_outcurr]*b);
-
+                Timer(Duration(seconds: 1), () {
+                  last = fin[_outcurr]*b;
+                });
+              last = fin[_outcurr]*b;
 
               });
-            },
-          )
+            },*/
+          ),
+
+          SizedBox(height: 50,),
+          Text("$last")
 
 
         ],
@@ -150,8 +169,45 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  void _temp() {
+      getJSONdata();
+
+  }
+
+
+  Future<String> getJSONdata() async{
+    String url_str = "https://api.exchangerate-api.com/v4/latest/"+_inputcurr;
+
+    var response = await http.get(
+        Uri.encodeFull(url_str),
+        headers: {"Accept":"applicaion/json"}
+    );
+
+    debugPrint(response.body);
+
+
+    var data = jsonDecode(response.body);
+    var fin = data['rates'];
+
+    print(fin[_outcurr]);
+    int b = int.parse(myController.text);
+
+    setState(() {
+      last = fin[_outcurr]*b;
+
+    });
+
+
+    print(last);
+    return (fin[_outcurr]*b).toString();
+
+
+
+  }
+
   
 
 }
+
 
 
